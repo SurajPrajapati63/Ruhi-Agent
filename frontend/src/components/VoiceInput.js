@@ -7,7 +7,7 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
 const VoiceInput = ({ className, onTranscriptChange, onVoiceSubmit }) => {
   const [listening, setListening] = useState(false);
   const [supported, setSupported] = useState(!!SpeechRecognition);
-  const [transcript, setTranscript] = useState('');
+  const [, setTranscript] = useState('');
   const recognitionRef = useRef(null);
   const transcriptRef = useRef('');
   const pendingSubmitRef = useRef(false);
