@@ -16,7 +16,7 @@ const app = express();
 
 connectDB();
 
-app,get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
     message: "Server running",
   });
@@ -33,9 +33,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 
-app.use("/api/auth", authRoutes);
-app.use("/api/chat", chatRoutes);
-app.use("/api/upload", uploadRoutes);
+app.use("/auth", authRoutes);
+app.use("/chat", chatRoutes);
+app.use("/upload", uploadRoutes);
 
 
 
