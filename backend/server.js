@@ -16,7 +16,11 @@ const app = express();
 
 connectDB();
 
-
+app,get("/", (req, res) => {
+  res.json({
+    message: "Server running",
+  });
+});
 
 app.use(cors({
   origin: true,

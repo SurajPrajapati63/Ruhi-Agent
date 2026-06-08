@@ -65,9 +65,7 @@ exports.chat = async (req, res) => {
 
     const response = await model.invoke(messages);
 
-    const normalizedReply = response.content
-      .replace(/Nova AI/g, 'Ruhi AI')
-      .replace(/Nova\b/g, 'Ruhi');
+    const normalizedReply = response.content.trim();
 
     res.json({
       reply: normalizedReply,
