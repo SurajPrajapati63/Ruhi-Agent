@@ -6,12 +6,13 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ChatPage from './pages/ChatPage';
 
+const PUBLIC_PATHS = ['/login', '/signup'];
+
 function App() {
   const { user, checkAuth } = useAuthStore();
-  const publicPaths = ['/login', '/signup'];
 
   useEffect(() => {
-    if (!publicPaths.includes(window.location.pathname)) {
+    if (!PUBLIC_PATHS.includes(window.location.pathname)) {
       checkAuth();
     }
   }, [checkAuth]);
