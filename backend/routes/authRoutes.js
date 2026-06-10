@@ -44,7 +44,6 @@ router.get(
 
 router.post(
   "/logout",
-  authMiddleware,
   logout
 );
 

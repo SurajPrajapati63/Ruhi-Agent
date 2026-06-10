@@ -40,13 +40,16 @@ export const useAuthStore = create((set) => ({
   },
 
   logout: async () => {
+    set({ user: null, error: null, loading: false });
+
     try {
       await apiClient.post('/auth/logout');
-      set({ user: null, error: null });
     } catch (error) {
-      const message = error.response?.data?.message || 'Logout failed';
-      set({ error: message });
-      throw error;
+      if (error.response?.status !== 401) {
+        const message = error.response?.data?.message || 'Logout failed';
+        set({ error: message });
+        throw error;
+      }
     }
   },
 
