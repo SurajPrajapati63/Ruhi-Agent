@@ -15,9 +15,12 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Clear auth and redirect to login if needed
       localStorage.removeItem('token');
-      window.location.href = '/login';
+
+      const publicPaths = ['/login', '/signup'];
+      if (!publicPaths.includes(window.location.pathname)) {
+        window.location.replace('/login');
+      }
     }
     return Promise.reject(error);
   }

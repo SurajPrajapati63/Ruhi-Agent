@@ -2,6 +2,27 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const createAuthToken = (user) =>
+  jwt.sign(
+    {
+      id: user._id,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    },
+  );
+
+const setAuthCookie = (res, token) => {
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+};
+
 /*
 ========================
 SIGNUP
@@ -48,6 +69,7 @@ exports.signup = async (req, res) => {
       role: "user",
     });
 
+    const token = createAuthToken(user);
     const safeUser = {
       id: user._id,
       name: user.name,
@@ -55,9 +77,12 @@ exports.signup = async (req, res) => {
       role: user.role,
     };
 
+    setAuthCookie(res, token);
+
     res.status(201).json({
       success: true,
       message: "Signup Successful",
+      token,
       user: safeUser,
     });
   } catch (error) {
@@ -113,16 +138,7 @@ exports.login = async (req, res) => {
     }
 
     // Generate JWT
-    const token = jwt.sign(
-      {
-        id: user._id,
-        role: user.role,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      },
-    );
+    const token = createAuthToken(user);
 
     const safeUser = {
       id: user._id,
@@ -132,11 +148,7 @@ exports.login = async (req, res) => {
     };
 
     // Cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    setAuthCookie(res, token);
 
     res.status(200).json({
       success: true,
