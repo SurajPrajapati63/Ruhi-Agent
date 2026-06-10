@@ -8,9 +8,12 @@ import ChatPage from './pages/ChatPage';
 
 function App() {
   const { user, checkAuth } = useAuthStore();
+  const publicPaths = ['/login', '/signup'];
 
   useEffect(() => {
-    checkAuth();
+    if (!publicPaths.includes(window.location.pathname)) {
+      checkAuth();
+    }
   }, [checkAuth]);
 
   return (

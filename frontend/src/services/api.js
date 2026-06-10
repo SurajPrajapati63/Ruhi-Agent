@@ -16,13 +16,6 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-
-      const publicPaths = ['/login', '/signup'];
-      const isLogoutRequest = error.config?.url?.includes('/auth/logout');
-
-      if (!publicPaths.includes(window.location.pathname) && !isLogoutRequest) {
-        window.location.replace('/login');
-      }
     }
     return Promise.reject(error);
   }
